@@ -19,12 +19,14 @@ models:
     staging:
       +materialized: view
     intermediate:
-      +materialized: table
+      +materialized: view
     marts:
       +materialized: view
       dimensions:
-        +materialized: table
+        +materialized: view
       facts:
-        +materialized: table
+        +materialized: view
       analysis:
         +materialized: view
+
+
