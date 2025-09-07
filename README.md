@@ -1,15 +1,21 @@
-Welcome to your new dbt project!
+# so-unanswered-dbt
 
-### Using the starter project
+This is a dbt project built on the [Stack Overflow BigQuery public dataset](https://cloud.google.com/bigquery-public-datasets/stackoverflow).  
+It models the data into a **star schema** to analyze questions that are trending but unanswered.
 
-Try running the following commands:
-- dbt run
-- dbt test
+## Deliverables
 
+- **dbt project (this repo)**:  
+  https://github.com/colinberrygithub/so-unanswered-dbt  
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+- **BigQuery dataset (public)**:  
+  `clean-sylph-471418-n5:so_unanswered_us`  
+  [View in BigQuery Console](https://console.cloud.google.com/bigquery?project=clean-sylph-471418-n5&d=so_unanswered_us)
+
+- **Data Studio dashboard (to be added)**:  
+  *(link once published)*
+
+## How to run locally
+1. Install dbt for BigQuery:
+   ```bash
+   pip install dbt-bigquery
