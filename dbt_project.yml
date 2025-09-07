@@ -1,0 +1,30 @@
+name: 'so_unanswered_dbt'
+version: '1.0.0'
+config-version: 2
+
+profile: 'so_unanswered'
+
+model-paths: ['models']
+seed-paths: ['seeds']
+macro-paths: ['macros']
+analysis-paths: ['analyses']
+test-paths: ['tests']
+snapshot-paths: ['snapshots']
+target-path: 'target'
+clean-targets: ['target', 'dbt_packages']
+
+models:
+  so_unanswered_dbt:
+    +materialized: view
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: view
+      dimensions:
+        +materialized: table
+      facts:
+        +materialized: table
+      analysis:
+        +materialized: view

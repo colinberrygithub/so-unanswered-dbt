@@ -1,0 +1,77 @@
+version: 2
+models:
+  - name: stg_stackoverflow__posts_questions
+    columns:
+      - name: question_id
+        tests: [not_null, unique]
+  - name: stg_stackoverflow__posts_answers
+    columns:
+      - name: answer_id
+        tests: [not_null, unique]
+      - name: question_id
+        tests:
+          - relationships:
+              to: ref('stg_stackoverflow__posts_questions')
+              field: question_id
+  - name: int_question_tags
+    columns:
+      - name: question_id
+        tests:
+          - relationships:
+              to: ref('stg_stackoverflow__posts_questions')
+              field: question_id
+      - name: tag_name
+        tests: [not_null]
+  - name: dim_date
+    columns:
+      - name: date_sk
+        tests: [not_null, unique]
+  - name: dim_user
+    columns:
+      - name: user_sk
+        tests: [not_null, unique]
+      - name: user_id
+        tests: [not_null]
+  - name: dim_tag
+    columns:
+      - name: tag_sk
+        tests: [not_null, unique]
+      - name: tag_name
+        tests: [not_null]
+  - name: dim_question
+    columns:
+      - name: question_sk
+        tests: [not_null, unique]
+      - name: question_id
+        tests: [not_null, unique]
+  - name: fact_questions
+    columns:
+      - name: question_sk
+        tests:
+          - relationships:
+              to: ref('dim_question')
+              field: question_sk
+  - name: fact_answers
+    columns:
+      - name: answer_sk
+        tests: [not_null, unique]
+      - name: question_sk
+        tests:
+          - relationships:
+              to: ref('dim_question')
+              field: question_sk
+  - name: bridge_question_tag
+    columns:
+      - name: question_sk
+        tests:
+          - relationships:
+              to: ref('dim_question')
+              field: question_sk
+      - name: tag_sk
+        tests:
+          - relationships:
+              to: ref('dim_tag')
+              field: tag_sk
+  - name: tag_trends_monthly
+  - name: unanswered_hot_topics
+  - name: question_response_times
