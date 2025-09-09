@@ -1,6 +1,7 @@
+-- models/marts/unanswered_master.sql
 {{ config(materialized='view') }}
 
-SELECT
+select
   fq.question_id,
   fq.user_sk,
   fq.date_sk,
@@ -8,21 +9,17 @@ SELECT
   fq.view_count,
   fq.score,
   fq.favorite_count,
-
-  CASE WHEN fq.answer_count = 0 THEN 1 ELSE 0 END AS unanswered_flag,
-  SAFE_DIVIDE(fq.answer_count, NULLIF(fq.view_count, 0)) AS answers_per_view,
-
+  case when fq.answer_count = 0 then 1 else 0 end                                    as unanswered_flag,
+  safe_divide(fq.answer_count, nullif(fq.view_count, 0))                              as answers_per_view,
   bqt.tag_sk,
-  dt.tag_name,
+  bqt.tag_name,
   du.reputation,
-  dd.year  AS date_year,
-  dd.month AS date_month
-FROM {{ ref('fact_questions') }}            AS fq
-LEFT JOIN {{ ref('bridge_question_tag') }}  AS bqt
-  ON fq.question_id = bqt.question_id
-LEFT JOIN {{ ref('dim_tag') }}              AS dt
-  ON bqt.tag_sk = dt.tag_sk
-LEFT JOIN {{ ref('dim_user') }}             AS du
-  ON fq.user_sk = du.user_sk
-LEFT JOIN {{ ref('dim_date') }}             AS dd
-  ON fq.date_sk = dd.date_sk
+  dd.year  as date_year,
+  dd.month as date_month
+from {{ ref('fact_questions') }}            as fq
+left join {{ ref('bridge_question_tag') }}  as bqt
+  on fq.question_id = bqt.question_id
+left join {{ ref('dim_user') }}             as du
+  on fq.user_sk = du.user_sk
+left join {{ ref('dim_date') }}             as dd
+  on fq.date_sk = dd.date_sk
