@@ -1,7 +1,9 @@
-{{ config(tags=['bridge']) }}
+-- models/marts/bridge_question_tag.sql
+{{ config(materialized='view') }}
+
 select
-  {{ sk(["cast(qt.question_id as string)"]) }} as question_sk,
-  {{ sk(["qt.tag_name"]) }} as tag_sk,
-  qt.question_id,
-  qt.tag_name
-from {{ ref('int_question_tags') }} qt
+  question_id,
+  {{ dbt_utils.generate_surrogate_key(['cast(question_id as string)']) }} as question_sk,
+  lower(tag_name)                                                   as tag_name,
+  {{ dbt_utils.generate_surrogate_key(['lower(tag_name)']) }}       as tag_sk
+from {{ ref('int_question_tags') }}
